@@ -1,0 +1,18 @@
+{
+  "name": "kratos-app-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "less-detail": "lessc css/detail.less > css/detail.min.css -x",
+    "less-order": "lessc css/order.less > css/order.min.css -x",
+    "less-home": "lessc css/home.less > css/home.min.css -x"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "less": "^2.7.3",
+    "swiper": "^4.0.7",
+    "zepto": "^1.2.0"
+  }
+}
