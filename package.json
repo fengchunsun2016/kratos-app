@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.2",
     "less": "^2.7.3",
     "swiper": "^4.0.7",
     "zepto": "^1.2.0"

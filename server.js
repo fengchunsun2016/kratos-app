@@ -53,7 +53,7 @@ let server = http.createServer(
 
 
     /*res.writeHead(200,{"content-type":"text/html"});
-    res.end(fs.readFileSync(__dirname+"/"+"home.html","utf-8"));*/
+    res.end(fs.readFileSync(__dirname+"/"+"home.html","utf8"));*/
   }
 ).listen(1990,function () {
   console.log('listening 1990 success');

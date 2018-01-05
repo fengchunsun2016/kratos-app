@@ -8,6 +8,12 @@ $(document).ready(function () {
     pagination: {
       el: '.swiper-pagination',
     },
+  });
+
+  $('.return').tap(function (e) {
+    history.go(-1);
   })
+
+
 });
 
