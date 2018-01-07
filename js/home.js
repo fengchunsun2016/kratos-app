@@ -10,8 +10,10 @@ $(document).ready(function () {
   swiper();
 
   /*精选礼券*/
-  //selectGifts();
+  selectGifts();
 
+  /*人气推荐*/
+  popularRecommend();
 
 
   /*头部轮播图*/
@@ -41,6 +43,7 @@ $(document).ready(function () {
           //初始化轮播图
           mySwiper();
 
+          //点击图片跳转详情页
           $imgs.tap(function () {
 
             var id = $(this).attr("data-id");
@@ -83,6 +86,27 @@ $(document).ready(function () {
       data:{},
       success:function (data) {
         //console.log(data,'data');
+        var list = data.list;
+        for(var i=0;i<list.length;i++){
+          var listItem = list[i];
+          if(listItem.position==1){
+            $('.selected-gifts .left img').attr({'src':listItem.imgUrl,'data-id':listItem.goodsId,'data-url':listItem.redirectUrl})
+          }else if(listItem.position==2){
+            $('.selected-gifts .right-top img').attr({'src':listItem.imgUrl,'data-id':listItem.goodsId,'data-url':listItem.redirectUrl})
+          }else if(listItem.position==3){
+            $('.selected-gifts .right-bottom img').attr({'src':listItem.imgUrl,'data-id':listItem.goodsId,'data-url':listItem.redirectUrl})
+          }
+        }
+
+        //点击图片跳转详情页
+        var $imgs = $('.selected-gifts img');
+        $imgs.tap(function () {
+
+          var id = $(this).attr("data-id");
+          sessionStorage.setItem("GOODSID",id);
+          window.location.href = './detail.html';
+
+        })
 
 
       },
@@ -90,12 +114,43 @@ $(document).ready(function () {
         console.log(err,'err');
       },
       complete:function (com) {
-        console.log(com);
+        //console.log(com);
       }
     })
   }
 
 
+  /*人气推荐*/
+  function popularRecommend() {
+    $.ajax({
+      url:domain+'/shop/index/popular',
+      method:'GET',
+      data:{},
+      success:function (data) {
+        console.log(data,'popular');
+        if(data.code=='SUCCESS'){
+          var $viewList = $('.popular-recommend .list .item');
+          var list = data.list;
+          for(var i=0;i<list.length;i++){
+            var listItem = list[i];
+            $viewList.each(function (index,item) {
+              if(i==index){
+
+              }
+            })
+          }
+
+
+        }
+      },
+      error:function (err) {
+        console.log(err);
+      },
+      complete:function (com) {
+
+      }
+    })
+  }
 
 
 
