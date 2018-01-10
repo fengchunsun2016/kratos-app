@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no, email=no" />
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/iconfont.css">
+  <link rel="stylesheet" href="css/we.min.css">
+
+
+
+  <script>
+    (function (doc, win) {
+      var docEl = doc.documentElement,
+        recalc = function () {
+          var clientWidth = docEl.clientWidth;
+          if (!clientWidth) return;
+          if(clientWidth>=640){
+            docEl.style.fontSize = '100px';
+          }else{
+            docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+          }
+        };
+      recalc();
+      if (!doc.addEventListener) return;
+      var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+      win.addEventListener(resizeEvt, recalc, false);
+    })(document, window);
+
+  </script>
+
+</head>
+<body>
+
+<div class="header">
+关于我们
+</div>
+
+<span class="iconfont icon-back return"></span>
+
+<div class="content">
+  <div class="bg-top">
+    <img src="./images/bg-for-we.png" alt="">
+  </div>
+
+  <div class="info">
+    <div class="tittle">
+      <span class="iconfont icon-jianjie"></span>
+      <span>公司简介</span>
+    </div>
+    <div class="text">
+      观自在
+      菩萨，行深般若波罗蜜多时，照见五蕴皆空，度一切苦厄。
+      舍利子，色不异空，空不异色，色即是空，空即是色，受想行识亦复如是。
+      舍利子，是诸法空相，不生不灭，不垢不净，不增不减。是故空中无色，无受想行识，无眼耳鼻舌身意，无色声香味触法，无眼界乃至无意识界，无无明亦无无明尽，乃至无老死，亦无老死尽，无苦集灭道，无智亦无得。
+      以无所得故，菩提萨埵。依般若波罗蜜多故，心无挂碍；无挂碍故，无有恐怖，远离颠倒梦想，究竟涅槃。
+      三世诸佛，依般若波罗蜜多故，得阿耨多罗三藐三菩提。
+      故知般若波罗蜜多，是大神咒，是大明咒，是无上咒，是无等等咒，能除一切苦，真实不虚。
+      故说般若波罗蜜多咒，即说咒曰：揭谛揭谛　波罗揭谛　波罗僧揭谛　菩提萨婆诃。
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="tittle">
+    <span class="iconfont icon-attachment"></span>
+    <span>联系我们</span>
+  </div>
+
+  <div class="tel">
+    <span>电话：</span>
+    <span>010-60561630</span>
+  </div>
+  <div class="address">
+    <span>地址：</span>
+    <span>北京市通州区新华西街58号万达广场A座2613</span>
+  </div>
+</div>
+
+
+<script src="js/zepto.js"></script>
+<script>
+  $('.return').tap(function (e) {
+    //
+
+    e.stopPropagation();
+  })
+
+</script>
+
+</body>
+</html>

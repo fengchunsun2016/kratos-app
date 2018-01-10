@@ -15,38 +15,43 @@ let server = http.createServer(
   (req,res)=>{
     console.log(req.url,'req');
     //console.log(res,'res');
-    var suffix = req.url.substr(req.url.length - 4, req.url.length);
+    var suffix = req.url.substr(req.url.length - 4, 4);
     var realpath = __dirname + '\\';
 
 
     if (suffix === '.css') {
       var filename = req.url.substr(5,req.url.length - 5);
-      console.log(filename,'css-filename');
+     // console.log(filename,'css-filename');
 
       res.writeHead(200, { 'Content-Type': 'text/css' });
       res.end(get_file_content(realpath + '\\css\\' + filename));
     } else if (suffix === '.jpg') {
       var filename = req.url.substr(8,req.url.length - 8);
-      console.log(filename,'jpg-filename');
+      //console.log(filename,'jpg-filename');
 
       res.writeHead(200, {'Content-Type': 'image/jpeg'});
       res.end(get_file_content(realpath+'\\images\\'+filename));
 
     } else if (suffix.indexOf('.js') != '-1'){
       var filename = req.url.substr(4,req.url.length - 4);
-      console.log(filename,'js-filename');
+      //console.log(filename,'js-filename');
 
       res.writeHead(200, { 'Content-Type': 'application/x-javascript' });
       res.end(get_file_content(__dirname + '\\js\\'+ filename));
-    } else if (suffix = 'html'){
+    } else if(req.url=='/'){
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(get_file_content(__dirname + '\\' + 'home.html'));
+    } else if (suffix == 'html'){
+      var filename = req.url.substr(1,req.url.length - 1);
+      console.log(filename,'html-filename');
 
       res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(get_file_content(__dirname + '\\home.html'));
-    }else if (suffix = '.ico'){
+      res.end(get_file_content(__dirname + '\\' + filename));
+    } else if (suffix == '.ico'){
 
       res.writeHead(200, { 'Content-Type': 'image/jpeg' });
       res.end(get_file_content(realpath+'\\images\\iphone.jpg'));
-    }else {
+    } else {
       res.writeHead(200, { 'Content-Type': 'text/plain' });
       res.end('貌似迷路了，，，');
     }

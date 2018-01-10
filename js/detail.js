@@ -14,6 +14,11 @@ $(document).ready(function () {
     history.go(-1);
   })
 
+  $('.button-buy').tap(function (e) {
+    window.location.href = './order.html';
+
+  })
+
 
 });
 

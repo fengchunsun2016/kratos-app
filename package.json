@@ -6,7 +6,9 @@
   "scripts": {
     "less-detail": "lessc css/detail.less > css/detail.min.css -x",
     "less-order": "lessc css/order.less > css/order.min.css -x",
-    "less-home": "lessc css/home.less > css/home.min.css -x"
+    "less-home": "lessc css/home.less > css/home.min.css -x",
+    "less-we": "lessc css/we.less > css/we.min.css -x",
+    "less-popular": "lessc css/popular.less > css/popular.min.css -x"
   },
   "author": "",
   "license": "ISC",

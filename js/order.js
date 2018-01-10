@@ -64,7 +64,9 @@ $(document).ready(function () {
     )
   }
 
-
+  $('.header .tittle .icon-back').tap(function (e) {
+    history.go(-1);
+  })
 
 
 })
