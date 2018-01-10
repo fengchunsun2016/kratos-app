@@ -13,27 +13,65 @@ $(document).ready(function () {
 
   getData();
   getData();
-  getData();
+  // getData();
 
 
 
-  console.log(innerHeight,'innerHeight');
-  console.log(document.documentElement.offsetHeight,'document.documentElement.offsetHeight');
-  console.log(document.documentElement.scrollHeight,'document.documentElement.scrollHeight');
+  // console.log(innerHeight,'innerHeight');
+  // console.log($(document.documentElement).height(),'document.documentElement.offsetHeight');
+  // console.log(document.documentElement.scrollHeight(),'document.documentElement.scrollHeight');
 
-  window.onscroll = function () {
+  ;(function () {
     var timer=null;
-    clearInterval(timer);
-    timer = setTimeout(function () {
+    $(window).on('scroll',function () {
+      var scrollH = document.documentElement.scrollHeight || document.body.scrollHeight;
+      var innerH = window.innerHeight;
+      var scrollT = document.documentElement.scrollTop || document.body.scrollTop;
+      if(innerH + scrollT >= scrollH){
+        $('.load-more').css('display','block');
+        clearInterval(timer);
+        timer = setTimeout(function () {
+          getData();
+        },100);
+      }
+    })
 
-      console.log('onscroll','settimeout');
-      /*console.log(innerHeight,'innerHeight');
-      console.log(document.documentElement.offsetHeight,'document.documentElement.offsetHeight');
-      console.log(document.documentElement.scrollHeight,'document.documentElement.scrollHeight');*/
-    },100);
+  })();
+  
+  ;(function () {
+    var _start = 0;
+    var _end = 0;
+
+    window.addEventListener('touchstart', touchStart, false);
+    window.addEventListener('touchmove', touchMove, false);
+    window.addEventListener('touchend', touchEnd, false);
+
+    function touchStart(event) {
+      var touch = event.targetTouches[0];
+      _start = touch.pageY;
+    }
+
+    function touchMove(event){
+      var touch = event.targetTouches[0];
+      _end = ( touch.pageY - _start);
+//下滑才执行操作
+
+    }
+
+    function touchEnd(event) {
+      if(_end > 200){     //200即手机下滑屏幕的距离，超过200则执行刷新动作
+        location.reload();
+      }
+    }
+  })()
 
 
-  }
+
+
+
+
+
+
 
 
 //获取人气推荐数据
@@ -93,6 +131,8 @@ $(document).ready(function () {
 
 
           $('.popular-recommend .list').append(str);
+
+          $('.load-more').css("display",'none');
 
           //点击列表跳转详情
           $viewList.tap(function () {
