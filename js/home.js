@@ -5,6 +5,7 @@
 $(document).ready(function () {
 
   const domain = 'https://www.easy-mock.com/mock/5a4340d2a3f8d40b6b2b3a1e/kratos';
+  const userId = null;
 
   /*整体布局*/
   layout();
@@ -15,7 +16,7 @@ $(document).ready(function () {
     $.ajax({
       url:domain + '/shop/index/layout',
       method:'GET',
-      data:{userId:''},
+      data:{userId},
       success:function (data) {
         if(data && data.code == 'SUCCESS'){
           //console.log(data,'layout');
@@ -39,7 +40,7 @@ $(document).ready(function () {
       url:domain + '/shop/index/banner',
       type:'POST',
       dataType:'json',
-      data:{userId:'where are you?'},
+      data:{userId},
       success:function (data) {
         if(data.code=='SUCCESS'){
           var list = data.list;
@@ -97,7 +98,7 @@ $(document).ready(function () {
     $.ajax({
       url:domain+'/shop/index/brand',
       dataType:'json',
-      data:{},
+      data:{userId},
       success:function (data) {
         //console.log(data,'data');
         var list = data.list;
@@ -135,7 +136,7 @@ $(document).ready(function () {
 
 
   /*人气推荐*/
-  function popularRecommend() {
+  /*function popularRecommend() {
 
     //点击更多时跳转到人气推荐页
     $('.popular-recommend .tittle .more').tap(function () {
@@ -147,7 +148,7 @@ $(document).ready(function () {
     $.ajax({
       url:domain+'/shop/index/popular',
       method:'GET',
-      data:{},
+      data:{userId},
       success:function (data) {
         console.log(data,'popular');
         if(data.code=='SUCCESS'){
@@ -186,7 +187,7 @@ $(document).ready(function () {
 
     </li>`;
             
-            /*$viewList.each(function (index,item) {
+            /!*$viewList.each(function (index,item) {
               if(i==index){
                 /!*$(item).attr({'goods-id':listItem.goodsId,'redirect-url':listItem.redirectUrl});
                 $(item).find('.pic img').attr({'src':listItem.imgUrl});
@@ -194,7 +195,7 @@ $(document).ready(function () {
                 $(item).find('.info .money .num').html(listItem.pointPrice);*!/
 
               }
-            })*/
+            })*!/
           }
 
 
@@ -216,6 +217,75 @@ $(document).ready(function () {
       },
       complete:function (com) {
 
+      }
+    })
+  }*/
+
+  function popularRecommend() {
+
+    $.ajax({
+      url:domain+'/shop/index/popular',
+      method:'GET',
+      data:{ userId },
+      success:function (data) {
+        // console.log(data,'popular');
+        if(data.code=='SUCCESS'){
+          var list = data.list;
+
+          //绑定数据
+          var str = ``;
+          for(var i=0;i<list.length;i++){
+            var listItem = list[i];
+            //console.log(listItem,'listItem');
+
+            str += `<li class="item" goods-id=${listItem.goodsId} redirect-url=${listItem.redirectUrl}>
+                      <div class="pic"><img src=${listItem.imgUrl} alt=${listItem.goodsName}></div>
+                
+                      <div class="info">
+                        <div class="name">${listItem.goodsName}</div>
+                        <div class="marks">`;
+
+            if(listItem.tags && listItem.tags.length){
+              for(var j = 0; j<listItem.tags.length; j++){
+                var tagItem = listItem.tags[j];
+                str += `<span>${tagItem.content}</span>`
+              }
+            }
+
+            str += `</div>
+                        <div class="bottom">
+                          <div class="money">
+                            <span>￥</span>
+                            <span class="num">100</span>
+                          </div>
+                          <div class="more"><i class="iconfont icon-more"></i></div>
+                        </div>
+                      </div>
+                
+                    </li>`;
+          }
+
+
+
+
+          $('.popular-recommend .list').append(str);
+
+
+
+          //点击列表跳转详情
+          var $viewList = $('.popular-recommend .list .item');
+          $viewList.off('tap');
+          $viewList.on('tap',function () {
+            var redirectUrl = $(this).attr('redirect-url');
+            var goodsId = $(this).attr('goods-id');
+            sessionStorage.setItem('GOODSID',goodsId);
+            window.location.href = redirectUrl;
+          })
+
+        }
+      },
+      error:function (err) {
+        console.log(err);
       }
     })
   }

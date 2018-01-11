@@ -5,22 +5,19 @@
 $(document).ready(function () {
 
   const domain = 'https://www.easy-mock.com/mock/5a4340d2a3f8d40b6b2b3a1e/kratos';
+  const userId = null;
+  let rows = 1;
+
 
   $('.return').tap(function (e) {
     history.go(-1);
   })
 
-
   getData();
   getData();
-  // getData();
 
 
-
-  // console.log(innerHeight,'innerHeight');
-  // console.log($(document.documentElement).height(),'document.documentElement.offsetHeight');
-  // console.log(document.documentElement.scrollHeight(),'document.documentElement.scrollHeight');
-
+  //上拉加载
   ;(function () {
     var timer=null;
     $(window).on('scroll',function () {
@@ -37,24 +34,29 @@ $(document).ready(function () {
     })
 
   })();
-  
+
+  //下拉刷新
   ;(function () {
     var _start = 0;
     var _end = 0;
 
-    window.addEventListener('touchstart', touchStart, false);
+    $(window).on('touchstart', touchStart);
+    $(window).on('touchmove', touchMove);
+    $(window).on('touchend', touchEnd);
+    /*window.addEventListener('touchstart', touchStart, false);
     window.addEventListener('touchmove', touchMove, false);
-    window.addEventListener('touchend', touchEnd, false);
+    window.addEventListener('touchend', touchEnd, false);*/
 
     function touchStart(event) {
       var touch = event.targetTouches[0];
       _start = touch.pageY;
+      console.log(_start,'_start');
     }
 
     function touchMove(event){
       var touch = event.targetTouches[0];
       _end = ( touch.pageY - _start);
-//下滑才执行操作
+      console.log(_end,'_end');
 
     }
 
@@ -63,84 +65,69 @@ $(document).ready(function () {
         location.reload();
       }
     }
-  })()
+  })();
 
 
-
-
-
-
-
-
-
-
-//获取人气推荐数据
+  //获取人气推荐数据
   function getData() {
+    console.log(rows,'rows');
     $.ajax({
       url:domain+'/shop/index/popular',
       method:'GET',
-      data:{},
+      data:{ userId, rows },
       success:function (data) {
         // console.log(data,'popular');
         if(data.code=='SUCCESS'){
-          var $viewList = $('.popular-recommend .list .item');
           var list = data.list;
 
           //绑定数据
           var str = ``;
           for(var i=0;i<list.length;i++){
             var listItem = list[i];
-            //console.log(listItem,'item');
+            //console.log(listItem,'listItem');
 
-            str += `<li class="item">
-      <div class="pic"><img src=${listItem.imgUrl} "goods-id":${listItem.id} "redirect-url":${listItem.redirectUrl} alt=""></div>
+            str += `<li class="item" goods-id=${listItem.goodsId} redirect-url=${listItem.redirectUrl}>
+                      <div class="pic"><img src=${listItem.imgUrl} alt=${listItem.goodsName}></div>
+                
+                      <div class="info">
+                        <div class="name">${listItem.goodsName}</div>
+                        <div class="marks">`;
 
-      <div class="info">
-        <div class="name">${listItem.goodsName}</div>
-        <div class="marks">`;
+                            if(listItem.tags && listItem.tags.length){
+                              for(var j = 0; j<listItem.tags.length; j++){
+                                var tagItem = listItem.tags[j];
+                                str += `<span>${tagItem.content}</span>`
+                              }
+                            }
 
-            if(listItem.tags && listItem.tags.length){
-              for(var j = 0; j<listItem.tags.length; j++){
-                var tagItem = listItem.tags[j];
-                str += `<span>${tagItem.content}</span>`
-              }
-            }
-
-            str += `</div>
-        <div class="bottom">
-          <div class="money">
-            <span>￥</span>
-            <span class="num">100</span>
-          </div>
-          <div class="more"><i class="iconfont icon-more"></i></div>
-        </div>
-      </div>
-
-    </li>`;
-
-            /*$viewList.each(function (index,item) {
-             if(i==index){
-             /!*$(item).attr({'goods-id':listItem.goodsId,'redirect-url':listItem.redirectUrl});
-             $(item).find('.pic img').attr({'src':listItem.imgUrl});
-             $(item).find('.info .name').html(listItem.goodsName);
-             $(item).find('.info .money .num').html(listItem.pointPrice);*!/
-
-             }
-             })*/
+                            str += `</div>
+                        <div class="bottom">
+                          <div class="money">
+                            <span>￥</span>
+                            <span class="num">100</span>
+                          </div>
+                          <div class="more"><i class="iconfont icon-more"></i></div>
+                        </div>
+                      </div>
+                
+                    </li>`;
           }
 
+
+          ++rows;
 
           $('.popular-recommend .list').append(str);
 
           $('.load-more').css("display",'none');
 
           //点击列表跳转详情
-          $viewList.tap(function () {
+          var $viewList = $('.popular-recommend .list .item');
+          $viewList.off('tap');
+          $viewList.on('tap',function () {
             var redirectUrl = $(this).attr('redirect-url');
             var goodsId = $(this).attr('goods-id');
             sessionStorage.setItem('GOODSID',goodsId);
             window.location.href = redirectUrl;
-
           })
 
         }
@@ -150,6 +137,8 @@ $(document).ready(function () {
       }
     })
   }
+
+
 
 
 

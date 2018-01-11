@@ -4,6 +4,10 @@
 
 $(document).ready(function () {
 
+  const domain = 'https://www.easy-mock.com/mock/5a4340d2a3f8d40b6b2b3a1e/kratos';
+  const userId = null;
+  const goodsId = null;
+
   getOrder();//获取订单页信息
   getPhone();//获取电话
 
@@ -12,14 +16,14 @@ $(document).ready(function () {
   function getOrder() {
     $.ajax(
       {
-        url:"https://www.easy-mock.com/mock/5a4340d2a3f8d40b6b2b3a1e/kratos/order",
+        url:domain + "/order",
         method:'GET',
         dataType:"json",
-        data:{userId:"110"},
+        data:{userId,goodsId},
         success:function (data) {
           if(data.code=='success'){
             data = data.data;
-            console.log(data);
+            //console.log(data);
             $('.pic img').attr('src',data.imgUrl);
             $(".info-text .tittle").html(data.goodsName);
             $('.info .money .num').html(data.amtPrice);
@@ -29,9 +33,6 @@ $(document).ready(function () {
         },
         err:function (err) {
           console.log(err);
-        },
-        complete:function () {
-
         }
       }
     )
@@ -41,14 +42,14 @@ $(document).ready(function () {
   function getPhone() {
     $.ajax(
       {
-        url : "https://www.easy-mock.com/mock/5a4340d2a3f8d40b6b2b3a1e/kratos/user/info",
+        url : domain + "/user/info",
         method : 'GET',
         dataType : "json",
-        data : { userId : "110" },
+        data : { userId },
         success : function (data) {
           if (data.code == 'success') {
             data = data.data;
-            console.log(data);
+            //console.log(data);
             var phone = data.phone.substr(0,3)+'****'+data.phone.substr(7,4);
             $('.send-address .phone-num').html(phone);
 
@@ -56,9 +57,6 @@ $(document).ready(function () {
         },
         err : function (err) {
           console.log(err);
-        },
-        complete : function () {
-
         }
       }
     )
@@ -66,6 +64,10 @@ $(document).ready(function () {
 
   $('.header .tittle .icon-back').tap(function (e) {
     history.go(-1);
+  })
+
+  $('.go-pay .go').tap(function () {
+    console.log('改去付钱了。。')
   })
 
 
