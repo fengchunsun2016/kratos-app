@@ -4,8 +4,12 @@
 
 $(document).ready(function () {
 
+  $("#user-id").html('url : ' + window.location.href);
+
+
   const domain = 'https://www.easy-mock.com/mock/5a4340d2a3f8d40b6b2b3a1e/kratos';
-  const userId = null;
+  const userId = request('userId');
+  console.log(userId,'userId');
 
   /*整体布局*/
   layout();
@@ -63,8 +67,20 @@ $(document).ready(function () {
           $imgs.tap(function () {
             var redirectUrl = $(this).attr('redirect-url');
             var id = $(this).attr("goods-id");
-            sessionStorage.setItem("GOODSID",id);
-            window.location.href = './detail.html';
+            //sessionStorage.setItem("GOODSID",id);
+            //window.location.href = '192.168.30.210:1990/detail.html';
+            const url = '192.168.30.210:1990/detail.html/?goodsId=' + id;
+
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+            if(isiOS){
+              window.webkit.messageHandlers.jump.postMessage(url);
+            }else{
+              test.hello(url);
+            }
+
 
           })
 
@@ -118,8 +134,20 @@ $(document).ready(function () {
         $imgs.tap(function () {
           var redirectUrl = $(this).attr('redirect-url');
           var id = $(this).attr("goods-id");
-          sessionStorage.setItem("GOODSID",id);
-          window.location.href = redirectUrl;
+          /*sessionStorage.setItem("GOODSID",id);
+          window.location.href = redirectUrl;*/
+
+          const url = '192.168.30.210:1990/detail.html/?goodsId=' + id;
+
+          var u = navigator.userAgent;
+          var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+          var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+          if(isiOS){
+            window.webkit.messageHandlers.jump.postMessage(url);
+          }else{
+            test.hello(url);
+          }
 
         })
 
@@ -136,92 +164,13 @@ $(document).ready(function () {
 
 
   /*人气推荐*/
-  /*function popularRecommend() {
+  function popularRecommend() {
 
     //点击更多时跳转到人气推荐页
     $('.popular-recommend .tittle .more').tap(function () {
       window.location.href = './popular.html';
-    })
+    });
 
-
-    //获取人气推荐数据
-    $.ajax({
-      url:domain+'/shop/index/popular',
-      method:'GET',
-      data:{userId},
-      success:function (data) {
-        console.log(data,'popular');
-        if(data.code=='SUCCESS'){
-          var $viewList = $('.popular-recommend .list .item');
-          var list = data.list;
-
-          //绑定数据
-          var str = ``;
-          for(var i=0;i<list.length;i++){
-            var listItem = list[i];
-            console.log(listItem,'item');
-
-            str += `<li class="item">
-      <div class="pic"><img src=${listItem.imgUrl} "goods-id":${listItem.id} "redirect-url":${listItem.redirectUrl} alt=""></div>
-
-      <div class="info">
-        <div class="name">${listItem.goodsName}</div>
-        <div class="marks">`;
-
-            if(listItem.tags && listItem.tags.length){
-              for(var j = 0; j<listItem.tags.length; j++){
-                var tagItem = listItem.tags[j];
-                str += `<span>${tagItem.content}</span>`
-              }
-            }
-
-            str += `</div>
-        <div class="bottom">
-          <div class="money">
-            <span>￥</span>
-            <span class="num">100</span>
-          </div>
-          <div class="more"><i class="iconfont icon-more"></i></div>
-        </div>
-      </div>
-
-    </li>`;
-            
-            /!*$viewList.each(function (index,item) {
-              if(i==index){
-                /!*$(item).attr({'goods-id':listItem.goodsId,'redirect-url':listItem.redirectUrl});
-                $(item).find('.pic img').attr({'src':listItem.imgUrl});
-                $(item).find('.info .name').html(listItem.goodsName);
-                $(item).find('.info .money .num').html(listItem.pointPrice);*!/
-
-              }
-            })*!/
-          }
-
-
-          $('.popular-recommend .list').html(str);
-
-          //点击列表跳转详情
-          $viewList.tap(function () {
-            var redirectUrl = $(this).attr('redirect-url');
-            var goodsId = $(this).attr('goods-id');
-            sessionStorage.setItem('GOODSID',goodsId);
-            window.location.href = redirectUrl;
-
-          })
-
-        }
-      },
-      error:function (err) {
-        console.log(err);
-      },
-      complete:function (com) {
-
-      }
-    })
-  }*/
-
-  function popularRecommend() {
 
     $.ajax({
       url:domain+'/shop/index/popular',
@@ -278,8 +227,20 @@ $(document).ready(function () {
           $viewList.on('tap',function () {
             var redirectUrl = $(this).attr('redirect-url');
             var goodsId = $(this).attr('goods-id');
-            sessionStorage.setItem('GOODSID',goodsId);
-            window.location.href = redirectUrl;
+            //sessionStorage.setItem('GOODSID',goodsId);
+            //window.location.href = redirectUrl;
+
+            const url = '192.168.30.210:1990/detail.html/?goodsId=' + id;
+
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+            if(isiOS){
+              window.webkit.messageHandlers.jump.postMessage(url);
+            }else{
+              test.hello(url);
+            }
           })
 
         }
@@ -291,6 +252,21 @@ $(document).ready(function () {
   }
 
 
+  //解析url
+  function request(paras) {
+    var url = location.href;
+    var paraString = url.substring(url.indexOf("?") + 1, url.length).split("&");
+    var paraObj = {}
+    for (i = 0; j = paraString[i]; i++) {
+      paraObj[j.substring(0, j.indexOf("=")).toLowerCase()] = j.substring(j.indexOf("=") + 1, j.length);
+    }
+    var returnValue = paraObj[paras.toLowerCase()];
+    if (typeof(returnValue) == "undefined") {
+      return "";
+    } else {
+      return returnValue;
+    }
+  }
 
 });
 

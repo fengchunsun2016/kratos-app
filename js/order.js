@@ -67,11 +67,15 @@ $(document).ready(function () {
   })
 
   $('.go-pay .go').tap(function () {
-    console.log('改去付钱了。。')
+    console.log('改去付钱了。。');
+    payClick.getPay('987654321');
   })
 
 
 })
+
+
+
 
 
 
